@@ -1,141 +1,873 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AudioHub – Your Audio & Video World</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Audio Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f2f5;
-      color: #1f2937;
+    :root {
+      --primary: #22243b;
+      --accent: #ff7d1a;
+      --bg: #f6f8fa;
+      --surface: #fff;
+      --shadow: 0 6px 36px rgba(44, 62, 80, 0.12);
+      --radius: 24px;
+      --card-radius: 16px;
+      --table-head: #ecf1f7;
+      --table-border: #e6eaf1;
+      --table-row: #fafbfc;
+      --text-dark: #19213d;
+      --text-light: #5e6b87;
+      --link: #ff7d1a;
+      --link-hover: #1a8cff;
+      --gradient: linear-gradient(120deg, #ffecd2 0%, #fcb69f 100%);
+      --hero-gradient: linear-gradient(120deg, #2c3e50 67%, #ff7d1a 160%);
+      --nav-gradient: linear-gradient(90deg, #ffecd2 0%, #ffe4c3 100%);
+      --header-overlay: rgba(40,20,60,0.27);
+    }
+    html, body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: var(--bg);
       margin: 0;
       padding: 0;
+      color: var(--text-dark);
+      min-height: 100vh;
+      scroll-behavior: smooth;
     }
+    body {
+      background: var(--gradient);
+    }
+    /* Attractive Header with glass & gradient */
     header {
-      background-color: #1e40af;
-      padding: 20px;
-      text-align: center;
+      background: var(--hero-gradient);
       color: #fff;
+      box-shadow: 0 7px 34px rgba(44, 62, 80, 0.17);
+      border-bottom-left-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+      position: relative;
+      z-index: 100;
+      min-height: 275px;
+      padding: 0;
+      overflow: visible;
+      /* Add glassmorphism effect */
+      backdrop-filter: blur(4px) saturate(120%);
+    }
+    .header-bg-shape {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130vw;
+      height: 220px;
+      top: 0;
+      z-index: 0;
+      background: radial-gradient(circle at 70% 40%, #ff7d1a99 0%, #2c3e50 68%, transparent 100%);
+      opacity: .16;
+      pointer-events: none;
+    }
+    .header-main-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 220px;
+      padding-top: 36px;
+      padding-bottom: 0;
     }
     header h1 {
-      font-size: 2.5rem;
-      margin: 0;
+      font-size: 3.1rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: -.03em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      background: linear-gradient(90deg, #ffd6a0 0%, #ff7d1a 70%, #2c3e50 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p {
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: #fff7ec;
+      margin: 0 0 22px 0;
+      letter-spacing: .01em;
+      text-shadow: 0 2px 10px #2c3e5099;
+      background: rgba(255,255,255,0.04);
+      padding: 3px 18px;
+      border-radius: 7px;
+    }
+    .header-utils {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      margin-top: 0;
+    }
+    #datetime, #visitor-count {
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+      font-size: 1rem;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      min-width: 180px;
+      box-shadow: 0 2px 8px rgba(255,125,26,0.06);
+      border: 1.5px solid #ff7d1a22;
+    }
+    #visitor-count {
+      min-width: 120px;
+      background: rgba(44,62,80,0.14);
+      box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+    }
+    .lang-switch {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      background: rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 6px 12px;
+    }
+    .lang-switch button {
+      border: none;
+      background: transparent;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1em;
+      cursor: pointer;
+      border-radius: 7px;
+      padding: 3px 12px;
+      transition: background .18s, color .18s;
+      outline: none;
+    }
+    .lang-switch button.active,
+    .lang-switch button:hover {
+      background: #fff;
+      color: var(--accent);
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 0 auto -30px auto;
+      background: var(--nav-gradient);
+      padding: 13px 0 13px 0;
+      border-radius: 15px;
+      max-width: 1020px;
+      box-shadow: 0 5px 22px rgba(44,62,80,0.12);
+      font-size: 1.09rem;
+      position: relative;
+      z-index: 5;
+      border: 1.5px solid #e6eaf1;
+      top: 50px;
     }
     nav a {
-      color: #cbd5e1;
-      margin: 0 12px;
+      color: #ff7d1a;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 9px;
+      transition: background .18s, color .18s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: 1.5px solid transparent;
+      background: rgba(255,255,255,0.18);
+      box-shadow: 0 1.5px 4px #ffecd255;
+    }
+    nav a:hover, nav a.active {
+      background: #ff7d1a;
+      color: #fff;
+      border-color: #ff7d1a;
+      box-shadow: 0 2px 8px #ffecd255;
+    }
+
+    /* Pull the main content below header/nav area */
+    .main-hub-content {
+      max-width: 1100px;
+      margin: 80px auto 0 auto;
+      padding: 0 24px 48px 24px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 2;
+      margin-top: 110px;
+      /* margin-top is increased to give space below nav header */
+    }
+    @media (max-width: 800px) {
+      .main-hub-content { margin-top: 130px; }
+      nav { font-size: .97rem; gap: 7px; border-radius: 8px; }
+      nav a { padding: 5px 8px; }
+      .header-main-content { padding-top: 18px; min-height: 180px; }
+      header h1 { font-size: 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .main-hub-content { margin-top: 135px; border-radius: 0; }
+      nav { font-size: .93rem; gap: 4px; padding: 5px 0; }
+      nav a { padding: 4px 7px; }
+      .header-main-content { padding-top: 7px; min-height: 120px; }
+      header h1 { font-size: 1.1rem; }
+    }
+    /* The rest keep from previous version, including cards, hero, etc. */
+    .hero {
+      margin: -44px auto 36px auto;
+      padding: 32px 32px 18px 32px;
+      background: var(--card-gradient);
+      border-radius: var(--radius);
+      max-width: 960px;
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+    .hero .hero-img {
+      flex: 0 0 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero .hero-img img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      box-shadow: 0 2px 16px rgba(44,62,80,.11);
+      border: 5px solid #fff;
+      background: #f7f5ff;
+      object-fit: cover;
+    }
+    .hero-content {
+      flex: 1 1 320px;
+    }
+    .hero-content h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin: 0 0 12px 0;
+      font-weight: 900;
+      letter-spacing: -.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-content p {
+      font-size: 1.08rem;
+      color: var(--text-dark);
+      margin-bottom: 0;
+    }
+    .cards-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      margin: 20px 0 36px 0;
+      justify-content: stretch;
+    }
+    .card {
+      background: var(--card-gradient);
+      box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
+      border-radius: var(--card-radius);
+      padding: 28px 24px 24px 24px;
+      flex: 1 1 240px;
+      min-width: 220px;
+      max-width: 330px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      position: relative;
+      transition: transform .16s, box-shadow .16s, background .18s;
+    }
+    .card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 8px 32px rgba(255,125,26,0.09);
+      background: #fff9f2;
+    }
+    .card .fa-fw {
+      font-size: 2.1rem;
+      color: var(--accent);
+      margin-bottom: 7px;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    .card-desc {
+      font-size: 1rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+    .card-links {
+      margin-top: 8px;
+    }
+    .card-links a {
+      color: var(--link);
+      font-weight: 600;
+      text-decoration: underline;
+      font-size: 1.03em;
+      margin-right: 14px;
+    }
+    .card-links a:hover {
+      color: var(--link-hover);
+    }
+    /* --- rest of previous CSS for tables, featured, tips, etc. --- */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      box-shadow: 0 2px 12px rgba(44, 62, 80, 0.03);
+      margin: 32px 0 48px 0;
+      background: var(--surface);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+    }
+    th, td {
+      padding: 16px;
+      text-align: left;
+    }
+    th {
+      background: var(--table-head);
+      color: var(--primary);
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-bottom: 2px solid var(--table-border);
+    }
+    tr {
+      background: var(--surface);
+      transition: background .2s;
+    }
+    tr:nth-child(even) {
+      background: var(--table-row);
+    }
+    tr:hover {
+      background: #fbeee6;
+    }
+    td {
+      color: var(--text-dark);
+      font-size: 1rem;
+      border-bottom: 1px solid var(--table-border);
+    }
+    a {
+      color: var(--link);
       text-decoration: none;
       font-weight: 600;
+      transition: color .2s;
+      border-bottom: 1px dashed var(--link);
     }
-    nav a:hover {
-      color: #93c5fd;
+    a:hover {
+      color: var(--link-hover);
+      border-bottom: 1px solid var(--link-hover);
     }
-    .container {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    .section {
-      background-color: #e2e8f0;
-      border-radius: 8px;
-      padding: 25px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    h2 {
-      color: #1e40af;
-      margin-bottom: 15px;
+    iframe {
+      margin-top: 20px;
+      border-radius: var(--card-radius);
+      border: 1.5px solid #e6eaf1;
+      box-shadow: 0 2px 12px rgba(30,34,90,0.07);
+      background: #fafbfc;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 85%;
+      max-width: 850px;
     }
     ul {
       list-style: none;
-      padding: 0;
+      padding: 0 0 0 0;
+      margin: 24px 0 32px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
     }
     ul li {
-      margin: 10px 0;
+      background: #f7f5ff;
+      padding: 13px 18px;
+      border-radius: 9px;
+      margin-bottom: 6px;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.02);
+      flex: 1 1 340px;
+      min-width: 280px;
+      transition: background 0.18s;
+    }
+    ul li:hover {
+      background: #fffbf4;
     }
     ul li a {
-      color: #1e40af;
-      text-decoration: none;
+      border: none;
+      font-weight: 700;
+      color: var(--link);
     }
     ul li a:hover {
-      color: #3b82f6;
+      color: var(--link-hover);
     }
-    audio, video, iframe {
-      width: 100%;
-      margin-top: 15px;
-      border-radius: 8px;
+    .tips {
+      margin: 22px 0 38px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: flex-start;
+      background: #f7fafd;
+      border-left: 5px solid var(--accent);
+      padding: 20px 22px;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+    }
+    .tips .fa-fw {
+      font-size: 2.3rem;
+      color: var(--link-hover);
+      margin-right: 15px;
+      margin-top: 4px;
+    }
+    .tips-content {
+      flex: 1;
+      min-width: 200px;
+    }
+    .tips-content h3 {
+      margin: 0 0 2px 0;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: .01em;
+    }
+    .tips-content p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-light);
+    }
+    .featured {
+      margin: 32px 0 24px 0;
+      background: #fdf7f1;
+      border-radius: var(--card-radius);
+      padding: 26px 20px;
+      box-shadow: 0 2.5px 10px rgba(255,125,26,0.04);
+    }
+    .featured-title {
+      font-size: 1.13rem;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .featured-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin: 0;
+      padding: 0;
+    }
+    .featured-list li {
+      background: #f7fafd;
+      border-left: 3.5px solid var(--accent);
+      border-radius: 7px;
+      padding: 10px 13px;
+      font-size: .98rem;
+      min-width: 210px;
+      margin: 0;
+      color: var(--text-dark);
+      box-shadow: 0 1px 4px rgba(44,62,80,0.02);
+    }
+    p, li {
+      color: var(--text-light);
+      font-size: 1.08rem;
+      line-height: 1.6;
     }
     footer {
+      font-size: 1em;
+      color: #8c9bb6;
       text-align: center;
-      padding: 20px;
-      background-color: #1e40af;
-      color: #cbd5e1;
+      padding: 16px 0 0 0;
+      margin-top: 48px;
+      border-top: 1.5px solid #e6eaf1;
+      letter-spacing: .04em;
+    }
+    #toTop {
+      position: fixed;
+      bottom: 36px;
+      right: 28px;
+      z-index: 1000;
+      display: none;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      font-size: 1.7rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+      transition: background .18s, box-shadow .18s;
+    }
+    #toTop:hover {
+      background: #22243b;
+      color: #ff7d1a;
+      box-shadow: 0 6px 24px rgba(44,62,80,0.28);
+    }
+    h2 .fa-fw, .featured-title .fa-fw {
+      font-size: 1.2em;
+      color: var(--accent);
+      margin-right: 8px;
+    }
+    @media (max-width: 800px) {
+      .hero { flex-direction: column; gap: 14px; padding: 18px; }
+      .hero .hero-img img { width: 90px; height: 90px; }
+      .hero-content h2 { font-size: 1.17rem; }
+      .hero-content { min-width: 0; }
+      .cards-row { flex-direction: column; gap: 15px; }
+      .card { max-width: 100%; min-width: 0; }
+      .tips { flex-direction: column; gap: 7px; padding: 13px 11px; }
+      .featured-list { flex-direction: column; gap: 7px; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 10px 4px 10px 4px; }
+      .main-hub-content { margin-top: 140px; }
     }
   </style>
 </head>
 <body>
-
+<a id="top"></a>
 <header>
-  <h1>🎧 AudioHub</h1>
+  <div class="header-bg-shape"></div>
+  <div class="header-main-content">
+    <h1><i class="fa-solid fa-globe fa-fw"></i> <span class="tr" data-en="Audio Hub" data-ar="المحور العالمي المجاني للصوتيات"> Audio Hub</span></h1>
+    <p class="tr" data-en="One Stop for Audio, Radio and E-Books" data-ar="محطة واحدة للصوتيات والراديو والكتب الإلكترونية">One Stop for Audio, Radio and E-Books</p>
+    <div class="header-utils">
+      <span id="datetime"></span>
+      <span id="visitor-count"><i class="fa-solid fa-eye"></i> <span class="tr" data-en="Visitors" data-ar="الزوار">Visitors</span>: <span id="visitNum">-</span> | <span class="tr" data-en="Unique" data-ar="فريد">Unique</span>: <span id="uniqueNum">-</span></span>
+      <div class="lang-switch">
+        <span class="tr" data-en="Language:" data-ar="اللغة:">Language:</span>
+        <button id="enBtn" class="active" onclick="switchLang('en')">EN</button>
+        <button id="arBtn" onclick="switchLang('ar')">AR</button>
+      </div>
+    </div>
+  </div>
   <nav>
-    <a href="#trending">Trending</a>
-    <a href="#languages">Languages</a>
-    <a href="#podcasts">Podcasts</a>
-    <a href="#videos">Videos</a>
+    <a href="#podcasts"><i class="fa-solid fa-podcast fa-fw"></i> <span class="tr" data-en="Podcasts" data-ar="البودكاست">Podcasts</span></a>
+    <a href="#radio"><i class="fa-solid fa-broadcast-tower fa-fw"></i> <span class="tr" data-en="Live Radio" data-ar="راديو مباشر">Live Radio</span></a>
+    <a href="#audio-tools"><i class="fa-solid fa-music fa-fw"></i> <span class="tr" data-en="Audio Tools" data-ar="أدوات الصوت">Audio Tools</span></a>
+    <a href="#live-radio-player"><i class="fa-solid fa-radio fa-fw"></i> <span class="tr" data-en="Live Radio Player" data-ar="مشغل الراديو المباشر">Live Radio Player</span></a>
+    <a href="#internet-radio"><i class="fa-solid fa-headphones fa-fw"></i> <span class="tr" data-en="Internet-Radio" data-ar="راديو الإنترنت">Internet-Radio</span></a>
+    <a href="#featured"><i class="fa-solid fa-star fa-fw"></i> <span class="tr" data-en="Featured" data-ar="مميز">Featured</span></a>
+    <a href="#spreaker"><i class="fa-solid fa-podcast fa-fw"></i> <span class="tr" data-en="Spreaker Podcast" data-ar="بودكاست Spreaker">Spreaker Podcast</span></a>
+    <a href="#ebook-sources"><i class="fa-solid fa-book-open fa-fw"></i> <span class="tr" data-en="E-Book Sources" data-ar="مصادر الكتب الإلكترونية">E-Book Sources</span></a>
+    <a href="#vintage-books"><i class="fa-solid fa-book fa-fw"></i> <span class="tr" data-en="Vintage Books" data-ar="كتب كلاسيكية">Vintage Books</span></a>
   </nav>
 </header>
 
-<div class="container">
+<div class="main-hub-content">
+  <!-- Hero Section as before -->
+  <div class="hero">
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?fit=crop&w=400&q=80" alt="Audio Hub">
+    </div>
+    <div class="hero-content">
+      <h2><i class="fa-solid fa-volume-high"></i> Welcome to Your Audio Universe!</h2>
+      <p class="tr" data-en="Stream global podcasts, discover live radio, create audio, and access millions of free e-books—all in one place." data-ar="استمع إلى البودكاست العالمي، واكتشف الراديو المباشر، وأنشئ الصوتيات، وادخل إلى ملايين الكتب الإلكترونية المجانية - كل ذلك في مكان واحد.">
+        Stream global podcasts, discover live radio, create audio, and access millions of free e-books—all in one place.
+      </p>
+      <div class="cards-row" style="margin-top:18px;">
+        <div class="card">
+          <i class="fa-solid fa-podcast fa-fw"></i>
+          <span class="card-title">Listen Instantly</span>
+          <span class="card-desc">Access trending podcasts & live radio from across the world—no signup needed.</span>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-music fa-fw"></i>
+          <span class="card-title">Create & Share</span>
+          <span class="card-desc">Record, mix, and publish your own audio and podcasts with free online tools.</span>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-book-open fa-fw"></i>
+          <span class="card-title">Read & Download</span>
+          <span class="card-desc">Find classic and modern e-books, audiobooks, and rare texts, 100% free.</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <section class="section" id="trending">
-    <h2>🔥 Trending Now</h2>
-    <ul>
-      <li><a href="https://podcasts.apple.com/" target="_blank">Apple Podcasts</a></li>
-      <li><a href="https://open.spotify.com/" target="_blank">Spotify</a></li>
-      <li><a href="https://www.soundcloud.com/" target="_blank">SoundCloud</a></li>
-      <li><a href="https://www.stitcher.com/" target="_blank">Stitcher</a></li>
+  <!-- Tips Bar -->
+  <div class="tips">
+    <i class="fa-solid fa-lightbulb fa-fw"></i>
+    <div class="tips-content">
+      <h3>Pro Tips</h3>
+      <p>
+        <strong>🔎 Discover:</strong> Use navigation tabs above to jump to Podcasts, Live Radio, Tools, or Books.<br>
+        <strong>🌐 Multilingual:</strong> Switch between English & Arabic for a local experience.<br>
+        <strong>🎧 Enjoy Everywhere:</strong> Works great on mobile and desktop. Bookmark for later!
+      </p>
+    </div>
+  </div>
+  
+  <h2 id="podcasts"><i class="fa-solid fa-podcast fa-fw"></i> <span class="tr" data-en="Popular Free Podcast Platforms" data-ar="منصات البودكاست المجانية الشهيرة">Popular Free Podcast Platforms</span></h2>
+  <div class="cards-row">
+    <div class="card">
+      <i class="fa-brands fa-spotify fa-fw" style="color:#1DB954"></i>
+      <span class="card-title">Spotify Podcasts</span>
+      <span class="card-desc">Free & premium podcast shows from every genre.</span>
+      <div class="card-links"><a href="https://www.spotify.com/podcasts/" target="_blank">Open</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-brands fa-google fa-fw" style="color:#4285f4"></i>
+      <span class="card-title">Google Podcasts</span>
+      <span class="card-desc">Stream podcasts across all your devices, free.</span>
+      <div class="card-links"><a href="https://podcasts.google.com/" target="_blank">Open</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-brands fa-apple fa-fw" style="color:#888"></i>
+      <span class="card-title">Apple Podcasts</span>
+      <span class="card-desc">Thousands of shows. Apple ID required.</span>
+      <div class="card-links"><a href="https://podcasts.apple.com/" target="_blank">Open</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-circle-nodes fa-fw" style="color:#ff7d1a"></i>
+      <span class="card-title">Podbean</span>
+      <span class="card-desc">Free hosting & listening platform for podcasts.</span>
+      <div class="card-links"><a href="https://www.podbean.com/podcast-hosting-free" target="_blank">Open</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-anchor fa-fw" style="color:#111"></i>
+      <span class="card-title">Anchor.fm</span>
+      <span class="card-desc">Create, host, and monetize your podcast.</span>
+      <div class="card-links"><a href="https://anchor.fm/" target="_blank">Open</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-radio fa-fw" style="color:#2c3e50"></i>
+      <span class="card-title">TuneIn</span>
+      <span class="card-desc">Radio + podcasts in one platform.</span>
+      <div class="card-links"><a href="https://tunein.com/podcasts/" target="_blank">Open</a></div>
+    </div>
+  </div>
+  
+  <h2 id="radio"><i class="fa-solid fa-broadcast-tower fa-fw"></i> <span class="tr" data-en="Top Free Live Radio Streaming Platforms" data-ar="أفضل منصات بث الراديو المباشر المجانية">Top Free Live Radio Streaming Platforms</span></h2>
+  <div class="cards-row">
+    <div class="card">
+      <i class="fa-solid fa-earth-africa fa-fw" style="color:#1abc9c"></i>
+      <span class="card-title">Radio Garden</span>
+      <span class="card-desc">Explore live radio worldwide via an interactive map.</span>
+      <div class="card-links"><a href="https://radio.garden/" target="_blank">Listen</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-layer-group fa-fw" style="color:#7952b3"></i>
+      <span class="card-title">Streema</span>
+      <span class="card-desc">Find stations by country & genre.</span>
+      <div class="card-links"><a href="https://streema.com/radios/" target="_blank">Listen</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-radio fa-fw" style="color:#2980b9"></i>
+      <span class="card-title">TuneIn Radio</span>
+      <span class="card-desc">Free & premium radio stations worldwide.</span>
+      <div class="card-links"><a href="https://tunein.com/" target="_blank">Listen</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-network-wired fa-fw" style="color:#e67e22"></i>
+      <span class="card-title">Live365</span>
+      <span class="card-desc">Community-run stations with diverse content.</span>
+      <div class="card-links"><a href="https://live365.com/listen" target="_blank">Listen</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-headphones fa-fw" style="color:#27ae60"></i>
+      <span class="card-title">Internet Radio</span>
+      <span class="card-desc">Thousands of stations by genre.</span>
+      <div class="card-links"><a href="https://www.internet-radio.com/" target="_blank">Listen</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-globe fa-fw" style="color:#ff7d1a"></i>
+      <span class="card-title">MyTuner</span>
+      <span class="card-desc">Global radio, music & podcasts.</span>
+      <div class="card-links"><a href="https://mytuner-radio.com/" target="_blank">Listen</a></div>
+    </div>
+  </div>
+
+  <div class="featured" id="featured">
+    <div class="featured-title"><i class="fa-solid fa-star fa-fw"></i> Featured: Trending Podcasts & Radios</div>
+    <ul class="featured-list">
+      <li><i class="fa-solid fa-fire fa-fw"></i> <a href="https://www.npr.org/sections/podcasts/" target="_blank">NPR Top Podcasts</a></li>
+      <li><i class="fa-solid fa-globe fa-fw"></i> <a href="https://www.bbc.co.uk/sounds" target="_blank">BBC Sounds</a></li>
+      <li><i class="fa-solid fa-microphone fa-fw"></i> <a href="https://www.earwolf.com/shows/" target="_blank">Earwolf Originals</a></li>
+      <li><i class="fa-solid fa-music fa-fw"></i> <a href="https://www.radioswissclassic.ch/en" target="_blank">Radio Swiss Classic (Instrumental)</a></li>
+      <li><i class="fa-solid fa-bolt fa-fw"></i> <a href="https://www.wnycstudios.org/podcasts" target="_blank">WNYC Studios</a></li>
     </ul>
-    <audio controls>
-      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-    <p>Sample Audio: Inspirational Talk</p>
-  </section>
+  </div>
 
-  <section class="section" id="languages">
-    <h2>🌍 Listen in Your Language</h2>
-    <ul>
-      <li><a href="https://podcasts.apple.com/sa/podcasts/%D8%A7%D9%84%D9%82%D8%B5%D8%B5-%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9/id1531056056" target="_blank">Arabic Podcasts</a></li>
-      <li><a href="https://hindi.webdunia.com/podcast/" target="_blank">Hindi Podcasts</a></li>
-      <li><a href="https://tamil.webdunia.com/podcast/" target="_blank">Tamil Podcasts</a></li>
-      <li><a href="https://www.bbc.co.uk/languages/french/" target="_blank">French Learning Audio</a></li>
-    </ul>
-  </section>
+  <h2 id="audio-tools"><i class="fa-solid fa-music fa-fw"></i> <span class="tr" data-en="Audio Creation & Hosting Tools" data-ar="أدوات إنشاء واستضافة الصوت">Audio Creation & Hosting Tools</span></h2>
+  <div class="cards-row">
+    <div class="card">
+      <i class="fa-brands fa-soundcloud fa-fw" style="color:#ff5500"></i>
+      <span class="card-title">SoundCloud</span>
+      <span class="card-desc">Upload, discover & share your audio.</span>
+      <div class="card-links"><a href="https://soundcloud.com/" target="_blank">Try</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-wave-square fa-fw" style="color:#ff7d1a"></i>
+      <span class="card-title">Audiomack</span>
+      <span class="card-desc">Host & stream music and podcasts.</span>
+      <div class="card-links"><a href="https://audiomack.com/" target="_blank">Try</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-cloud-music fa-fw" style="color:#5c3fa3"></i>
+      <span class="card-title">Mixcloud</span>
+      <span class="card-desc">DJ mixes, radio & podcasts in one place.</span>
+      <div class="card-links"><a href="https://www.mixcloud.com/" target="_blank">Try</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-microphone-lines fa-fw" style="color:#16a085"></i>
+      <span class="card-title">Vocaroo</span>
+      <span class="card-desc">Quick audio recordings—no account needed.</span>
+      <div class="card-links"><a href="https://vocaroo.com/" target="_blank">Try</a></div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-headphones-simple fa-fw" style="color:#ff7d1a"></i>
+      <span class="card-title">Soundtrap</span>
+      <span class="card-desc">Collaborative online music studio.</span>
+      <div class="card-links"><a href="https://www.soundtrap.com/" target="_blank">Try</a></div>
+    </div>
+  </div>
 
-  <section class="section" id="podcasts">
-    <h2>🎙️ Featured Podcasts</h2>
-    <iframe src="https://widget.spreaker.com/player?show_id=1433865&playlist=true" width="100%" height="200px" frameborder="0"></iframe>
-    <p>Now Playing: A popular Spreaker podcast</p>
-  </section>
+  <h2 id="live-radio-player"><i class="fa-solid fa-radio fa-fw"></i> <span class="tr" data-en="Live Radio Player" data-ar="مشغل الراديو المباشر">Live Radio Player</span></h2>
+  <iframe src="https://radio.garden/visit/london/UK" width="80%" height="350" loading="lazy"></iframe>
+  <p class="tr" data-en="Tip: Explore the interactive globe above to listen to radio stations from any country!" data-ar="نصيحة: استكشف الكرة الأرضية التفاعلية أعلاه للاستماع إلى محطات الراديو من أي دولة!">
+    Tip: Explore the interactive globe above to listen to radio stations from any country!
+  </p>
 
-  <section class="section" id="videos">
-    <h2>🎬 Watch Free Videos</h2>
-    <video controls>
-      <source src="https://archive.org/download/Sintel/sintel-2048-surround.mp4" type="video/mp4">
-    </video>
-    <p>Open Movie: Sintel</p>
+  <h2 id="internet-radio"><i class="fa-solid fa-headphones fa-fw"></i> <span class="tr" data-en="Internet-Radio" data-ar="راديو الإنترنت">Internet-Radio</span></h2>
+  <iframe src="https://www.internet-radio.com/" width="80%" height="350" loading="lazy"></iframe>
+  <p class="tr" data-en="Browse thousands of genre-based radio streams and discover new music anytime." data-ar="تصفح آلاف محطات الراديو حسب النوع واكتشف موسيقى جديدة في أي وقت.">
+    Browse thousands of genre-based radio streams and discover new music anytime.
+  </p>
 
-    <video controls>
-      <source src="https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4" type="video/mp4">
-    </video>
-    <p>Open Movie: Elephants Dream</p>
-  </section>
+  <h2 id="spreaker"><i class="fa-solid fa-podcast fa-fw"></i> <span class="tr" data-en="A popular Spreaker podcast" data-ar="بودكاست Spreaker الشهير">A popular Spreaker podcast</span></h2>
+  <iframe src="https://widget.spreaker.com/player?show_id=1433865&playlist=true" width="80%" height="350px" frameborder="0" loading="lazy"></iframe>
 
+  <h2 id="ebook-sources"><i class="fa-solid fa-book-open fa-fw"></i> <span class="tr" data-en="E-Book Sources" data-ar="مصادر الكتب الإلكترونية">E-Book Sources</span></h2>
+  <iframe src="https://archive.org/" width="80%" height="350px" frameborder="0" loading="lazy"></iframe>
+  <p class="tr" data-en="Search millions of public domain and modern books, audiobooks, magazines, and more on Internet Archive." data-ar="ابحث في ملايين الكتب في الملكية العامة والكتب الحديثة، والكتب الصوتية، والمجلات وأكثر على أرشيف الإنترنت.">
+    Search millions of public domain and modern books, audiobooks, magazines, and more on Internet Archive.
+  </p>
+
+  <h2 id="vintage-books"><i class="fa-solid fa-book fa-fw"></i> <span class="tr" data-en="Explore Free Vintage & Classic Books" data-ar="استكشف الكتب الكلاسيكية والمجانية">Explore Free Vintage & Classic Books</span></h2>
+  <p class="tr" data-en="Looking for free books online? Use the links below to search for rare, vintage, and public domain books from Internet Archive." data-ar="هل تبحث عن كتب مجانية على الإنترنت؟ استخدم الروابط أدناه للبحث عن الكتب النادرة والكلاسيكية في أرشيف الإنترنت.">Looking for free books online? Use the links below to search for rare, vintage, and public domain books from <a href="https://archive.org" target="_blank">Internet Archive</a>.</p>
+
+  <ul>
+    <li><a href="https://archive.org/search.php?query=classic+novels" target="_blank" class="tr" data-en="Classic Novels - Free PDF Downloads" data-ar="روايات كلاسيكية - تحميل مجاني PDF"><i class="fa-solid fa-book fa-fw"></i> Classic Novels - Free PDF Downloads</a></li>
+    <li><a href="https://archive.org/search.php?query=vintage+science+books" target="_blank" class="tr" data-en="Vintage Science Books - Rare Collections" data-ar="كتب علمية قديمة - مجموعات نادرة"><i class="fa-solid fa-flask fa-fw"></i> Vintage Science Books - Rare Collections</a></li>
+    <li><a href="https://archive.org/search.php?query=golden+age+comic+books" target="_blank" class="tr" data-en="Golden Age Comic Books - Free to Read" data-ar="كتب الكوميك القديمة - مجانية للقراءة"><i class="fa-solid fa-bolt-lightning fa-fw"></i> Golden Age Comic Books - Free to Read</a></li>
+    <li><a href="https://archive.org/search.php?query=historical+textbooks" target="_blank" class="tr" data-en="Historical Textbooks - Free Educational Resources" data-ar="كتب تاريخية - مصادر تعليمية مجانية"><i class="fa-solid fa-landmark fa-fw"></i> Historical Textbooks - Free Educational Resources</a></li>
+    <li><a href="https://archive.org/search.php?query=old+cookbooks" target="_blank" class="tr" data-en="Vintage Cookbooks & Recipe Books - Free Online" data-ar="كتب الطبخ القديمة - مجانية عبر الإنترنت"><i class="fa-solid fa-utensils fa-fw"></i> Vintage Cookbooks & Recipe Books - Free Online</a></li>
+    <li><a href="https://archive.org/search.php?query=public+domain+poetry" target="_blank" class="tr" data-en="Public Domain Poetry Collections - Free PDF" data-ar="مجموعات شعرية في الملكية العامة - PDF مجاني"><i class="fa-solid fa-feather-pointed fa-fw"></i> Public Domain Poetry Collections - Free PDF</a></li>
+    <li><a href="https://archive.org/search.php?query=rare+religious+texts" target="_blank" class="tr" data-en="Rare Religious Texts - Free Reading Online" data-ar="نصوص دينية نادرة - قراءة مجانية عبر الإنترنت"><i class="fa-solid fa-hands-praying fa-fw"></i> Rare Religious Texts - Free Reading Online</a></li>
+  </ul>
+
+  <p class="tr" data-en="Enjoy free access to millions of books, magazines, and educational materials from the world's largest digital library."
+     data-ar="استمتع بإمكانية الوصول المجاني إلى ملايين الكتب والمجلات والمواد التعليمية من أكبر مكتبة رقمية في العالم.">
+    Enjoy free access to millions of books, magazines, and educational materials from the world's largest digital library.
+  </p>
+
+  <footer>
+    <span class="tr" data-en="Audio Hub © 2025" data-ar="محور الصوتيات © 2025">Audio Hub © 2025</span>
+  </footer>
 </div>
+<button id="toTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+<script>
+  // Live date and time updater
+  function updateDateTime() {
+    const now = new Date();
+    // Format: e.g., Monday, 2025-07-07 13:08:20 GMT+3
+    const opts = {weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZoneName:'short'};
+    document.getElementById('datetime').textContent =
+      now.toLocaleDateString(currentLang, opts).replace(',', '') +
+      ' ' + now.toLocaleTimeString(currentLang, {hour: '2-digit', minute: '2-digit', second: '2-digit', hour12:false});
+  }
+  let currentLang = localStorage.getItem('lang') || 'en';
+  setInterval(updateDateTime, 1000); updateDateTime();
 
-<footer>
-  AudioHub © 2025 | Powered by Open Content & Public APIs.
-</footer>
+  // Page Visitor Counter (localStorage based, fallback)
+  function updateVisitorCount() {
+    // Total visits (per browser)
+    let visitNum = Number(localStorage.getItem('audioHubVisits') || 0) + 1;
+    localStorage.setItem('audioHubVisits', visitNum);
+    document.getElementById('visitNum').textContent = visitNum;
 
+    // Unique visitors (per browser, never decreased; counted once per device)
+    if (!localStorage.getItem('audioHubUnique')) {
+      localStorage.setItem('audioHubUnique', '1');
+      let uniqueNum = Number(localStorage.getItem('audioHubUniqueTotal') || 0) + 1;
+      localStorage.setItem('audioHubUniqueTotal', uniqueNum);
+      document.getElementById('uniqueNum').textContent = uniqueNum;
+    } else {
+      // Already counted this browser
+      document.getElementById('uniqueNum').textContent = localStorage.getItem('audioHubUniqueTotal') || 1;
+    }
+  }
+  updateVisitorCount();
+
+  // Scroll to Top button
+  const toTopBtn = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    if(document.documentElement.scrollTop > 200) {
+      toTopBtn.style.display = 'block';
+    } else {
+      toTopBtn.style.display = 'none';
+    }
+  });
+  toTopBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+
+  // Language Switcher: EN/AR
+  function switchLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    // Toggle buttons
+    document.getElementById('enBtn').classList.toggle('active', lang === 'en');
+    document.getElementById('arBtn').classList.toggle('active', lang === 'ar');
+    // Translate all
+    document.querySelectorAll('.tr').forEach(el => {
+      const text = el.dataset[lang];
+      if(text) {
+        if(el.tagName === 'A' || el.tagName === 'BUTTON' || el.tagName === 'TH' || el.tagName === 'TD' || el.tagName === 'SPAN' || el.tagName === 'P' || el.tagName === 'LI' || el.tagName === 'H2' || el.tagName === 'H1' || el.tagName === 'FOOTER') {
+          el.childNodes.forEach(node => {
+            if(node.nodeType === 3) el.removeChild(node); // Remove text nodes
+          });
+          el.insertAdjacentText('afterbegin', text);
+        } else {
+          el.textContent = text;
+        }
+      }
+    });
+    // Update date/time to reflect locale
+    updateDateTime();
+  }
+  // Initial language setup
+  switchLang(currentLang);
+
+  // Optionally, keep navigation scroll offset for fixed header
+  document.querySelectorAll('nav a').forEach(link => {
+    link.onclick = function(e) {
+      const href = link.getAttribute('href');
+      if(href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if(target) {
+          const y = target.getBoundingClientRect().top + window.scrollY - 90;
+          window.scrollTo({top: y, behavior: 'smooth'});
+        }
+      }
+    }
+  });
+</script>
 </body>
 </html>
